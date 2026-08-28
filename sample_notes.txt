@@ -1,0 +1,4 @@
+User-centred design is an iterative approach that focuses on users and their needs throughout design.
+Designers seek to understand users, tasks, and environments before making design decisions.
+User involvement and evaluation can help identify usability problems.
+Usability is often discussed in terms of effectiveness, efficiency, and satisfaction in a context of use.
