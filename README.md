@@ -1,5 +1,9 @@
 # Evidence-Aware RAG Academic Assistant
 
+[![Tests](https://github.com/ChenguangOW/Evidence-Aware-RAG-HCI-Dissertation/actions/workflows/tests.yml/badge.svg)](https://github.com/ChenguangOW/Evidence-Aware-RAG-HCI-Dissertation/actions/workflows/tests.yml)
+
+![Evidence-Aware interface](docs/evidence-aware-interface.jpg)
+
 MSc HCI dissertation prototype for:
 
 **Designing and Evaluating an Evidence-Aware Interface for RAG-Based Academic Question Answering**
@@ -76,6 +80,8 @@ Evidence-Aware-RAG-HCI-Dissertation/
 ├── run_windows.bat
 ├── sample_notes.txt
 ├── data/
+├── docs/
+│   └── evidence-aware-interface.jpg
 ├── src/
 │   └── evidence_rag/
 │       ├── __init__.py
