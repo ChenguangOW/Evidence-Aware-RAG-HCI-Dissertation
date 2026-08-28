@@ -2,7 +2,9 @@
 
 [![Tests](https://github.com/ChenguangOW/Evidence-Aware-RAG-HCI-Dissertation/actions/workflows/tests.yml/badge.svg)](https://github.com/ChenguangOW/Evidence-Aware-RAG-HCI-Dissertation/actions/workflows/tests.yml)
 
-![Evidence-Aware interface](docs/evidence-aware-interface.jpg)
+<p align="center">
+  <img src="https://github.com/ChenguangOW/Evidence-Aware-RAG-HCI-Dissertation/blob/main/docs/evidence-aware-interface.jpg?raw=1" alt="Evidence-Aware interface" width="100%">
+</p>
 
 MSc HCI dissertation prototype for:
 
