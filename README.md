@@ -18,7 +18,7 @@ The main contribution is not a new RAG algorithm. The project compares three int
 
 - **Version A — Basic Answer:** answer only
 - **Version B — Citation-Based:** answer plus source citations
-- **Version C — Evidence-Aware:** answer split into claims, with claim-level source evidence and heuristic support cues
+- **Version C — Evidence-Aware:** answer split into claims, with the most relevant one or two source sentences, highlighted matching terms, page provenance, and heuristic support cues
 
 The design goal is **calibrated trust**: helping users judge when an answer is well supported and when it should be checked more carefully.
 
@@ -33,6 +33,7 @@ The design goal is **calibrated trust**: helping users judge when an answer is w
 - local extractive fallback when no API key is available
 - three HCI interface conditions
 - claim-to-evidence alignment for Version C
+- concise sentence-level evidence snippets with highlighted claim terms
 - heuristic support labels:
   - Strongly Supported
   - Partially Supported
@@ -230,6 +231,7 @@ The current core test suite checks:
 - support-label thresholds
 - local no-API generation
 - claim-to-evidence alignment
+- sentence-level evidence selection and safe term highlighting
 
 ## Continuous integration
 

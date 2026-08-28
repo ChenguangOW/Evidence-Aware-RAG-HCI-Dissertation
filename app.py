@@ -14,13 +14,34 @@ if str(SRC) not in sys.path:
 from evidence_rag.document import load_uploaded_file, chunk_pages
 from evidence_rag.retrieval import make_retriever
 from evidence_rag.generation import generate_answer
-from evidence_rag.evidence import analyse_answer
+from evidence_rag.evidence import analyse_answer, highlight_evidence
 from evidence_rag.logging_utils import append_evaluation
 
 st.set_page_config(page_title="Evidence-Aware RAG Academic Assistant", page_icon="📚", layout="wide")
 
 st.title("Evidence-Aware RAG Academic Assistant")
 st.caption("MSc HCI dissertation prototype — comparing answer-only, citation-based, and evidence-aware interfaces.")
+st.markdown(
+    """
+    <style>
+    .evidence-snippet {
+        background: rgba(28, 131, 225, 0.10);
+        border-left: 4px solid #1c83e1;
+        border-radius: 0.35rem;
+        padding: 0.85rem 1rem;
+        line-height: 1.6;
+    }
+    .evidence-snippet mark {
+        background: #ffe08a;
+        border-radius: 0.2rem;
+        color: inherit;
+        font-weight: 650;
+        padding: 0.05rem 0.12rem;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 if "retriever" not in st.session_state:
     st.session_state.retriever = None
@@ -137,7 +158,11 @@ if answer and retrieved:
                     else:
                         st.error(f"{item.label} — similarity {item.similarity:.2f}")
                     st.markdown(f"**Best source evidence — Page {item.page}**")
-                    st.info(item.evidence)
+                    highlighted = highlight_evidence(item.claim, item.evidence)
+                    st.markdown(
+                        f'<div class="evidence-snippet">{highlighted}</div>',
+                        unsafe_allow_html=True,
+                    )
         st.caption("The support label is a heuristic interface cue based on textual similarity. It is not a calibrated probability or definitive factual proof.")
 
     st.divider()

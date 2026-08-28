@@ -7,7 +7,14 @@ sys.path.insert(0, str(ROOT / "src"))
 from evidence_rag.document import Page, chunk_pages
 from evidence_rag.retrieval import TfidfRetriever
 from evidence_rag.generation import generate_answer
-from evidence_rag.evidence import split_claims, evidence_label, analyse_answer
+from evidence_rag.evidence import (
+    analyse_answer,
+    evidence_label,
+    highlight_evidence,
+    select_evidence_sentences,
+    split_claims,
+    split_sentences,
+)
 
 
 def test_chunking():
@@ -67,3 +74,53 @@ def test_evidence_analysis():
     )
     assert len(analysis) == 1
     assert analysis[0].page == 3
+
+
+def test_sentence_level_evidence_selects_only_relevant_sentences():
+    chunk = (
+        "User-centred design focuses on users, their goals, tasks, and context of use. "
+        "Database indexes improve relational query performance. "
+        "Design teams study users throughout an iterative design process."
+    )
+    evidence = select_evidence_sentences(
+        "User-centred design focuses on users and uses an iterative process.",
+        chunk,
+    )
+    assert "focuses on users" in evidence
+    assert "iterative design process" in evidence
+    assert "Database indexes" not in evidence
+    assert len(split_sentences(evidence)) == 2
+
+
+def test_sentence_level_evidence_keeps_page_and_support_label():
+    chunks = chunk_pages(
+        [
+            Page(
+                7,
+                "User-centred design focuses on users and their needs. "
+                "Unrelated material discusses database indexing.",
+            )
+        ]
+    )
+    r = TfidfRetriever()
+    r.build(chunks)
+    analysis = analyse_answer(
+        "User-centred design focuses on users and their needs.",
+        r.retrieve("user-centred design", top_k=1),
+    )
+    assert analysis[0].page == 7
+    assert analysis[0].label == "Strongly Supported"
+    assert "database indexing" not in analysis[0].evidence.lower()
+
+
+def test_highlighting_marks_matches_and_escapes_source_html():
+    highlighted = highlight_evidence(
+        "Design focuses on users.",
+        "Design <script>alert('x')</script> focuses on users.",
+    )
+    assert "<mark>Design</mark>" in highlighted
+    assert "<mark>focuses</mark>" in highlighted
+    assert "<mark>users</mark>" in highlighted
+    assert "<mark>on</mark>" not in highlighted
+    assert "<script>" not in highlighted
+    assert "&lt;script&gt;" in highlighted
